@@ -10,29 +10,36 @@ import java.util.Optional;
 
 import com.campusland.entities.Format.domain.Format;
 import com.campusland.entities.Format.infrastructure.FormatRepository;
-public class FormatMySQLRepository {
-    String url = "";
-    String user = "";
-    String password = "";
+public class FormatMySQLRepository implements FormatRepository{
+    String url;
+    String user;
+    String password;
 
 
-    public void addFormat(Format Format) {
+    public FormatMySQLRepository(String url, String user, String password) {
+        this.url = url;
+        this.user = user;
+        this.password = password;
+    }
+
+    public void addFormat(Format format) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "INSERT INTO formato (id, descripcion) VALUES (?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, Format.getId());
-                statement.setString(2, Format.getDescription());
+                statement.setInt(1, format.getId());
+                statement.setString(2, format.getDescription());
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void updateFormat(Format Format) {
+    public void updateFormat(Format format) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE TABLE formato SET descripcion = ? WHERE id = ?";
+            String query = "UPDATE formato SET descripcion = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, Format.getDescription());
+                statement.setString(1, format.getDescription());
+                statement.setInt(2, format.getId());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -42,7 +49,7 @@ public class FormatMySQLRepository {
 
     public void deleteFormat(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "DELETE formato WHERE id = ?";
+            String query = "DELETE FROM formato WHERE id = ?";
                 try (PreparedStatement statement = connection.prepareStatement(query)) {
                     statement.setInt(1, id);
                     statement.executeUpdate();

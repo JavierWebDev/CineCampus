@@ -8,7 +8,6 @@ import java.util.Scanner;
 import com.campusland.utils.ConsoleUtils;
 import com.campusland.entities.Gender.domain.Gender;
 import com.campusland.entities.Gender.application.GenderService;
-import com.campusland.entities.Gender.domain.Gender;
 
 public class GenderConsoleAdapter {
     static Scanner sc = new Scanner(System.in);
@@ -23,12 +22,14 @@ public class GenderConsoleAdapter {
         String rta = "S";
         while (rta.equalsIgnoreCase("s")) {
             ConsoleUtils.limpiarConsola();
-            int idBase = 0;
             System.out.println("*************** REGISTRO DE GENEROS ***************");
+            System.out.println("[*] INGRESE EL ID DEL GENERO: ");
+            int id = Integer.parseInt(sc.nextLine());
+
             System.out.println("[*] INGRESE EL NOMBRE GENERO: ");
             String descripcion = sc.nextLine();
 
-            Gender gender = new Gender(idBase, descripcion);
+            Gender gender = new Gender(id, descripcion);
             genderService.createGender(gender);
 
             ConsoleUtils.limpiarConsola();

@@ -11,29 +11,35 @@ import java.util.Optional;
 import com.campusland.entities.Country.domain.Country;
 import com.campusland.entities.Country.infrastructure.CountryRepository;
 
-public class CountryMySQLRepository {
-    String url = "";
-    String user = "";
-    String password = "";
+public class CountryMySQLRepository implements CountryRepository{
+    String url;
+    String user;
+    String password;
 
+    public CountryMySQLRepository(String url, String user, String password) {
+        this.url = url;
+        this.user = user;
+        this.password = password;
+    }
 
-    public void addCountry(Country Country) {
+    public void addCountry(Country country) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "INSERT INTO pais (id, descripcion) VALUES (?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, Country.getId());
-                statement.setString(2, Country.getDescription());
+                statement.setInt(1, country.getId());
+                statement.setString(2, country.getDescription());
+                statement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void updateCountry(Country Country) {
+    public void updateCountry(Country country) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "UPDATE TABLE pais SET descripcion = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, Country.getDescription());
+                statement.setString(1, country.getDescription());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {

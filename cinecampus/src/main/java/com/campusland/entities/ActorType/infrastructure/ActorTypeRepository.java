@@ -6,8 +6,8 @@ import java.util.Optional;
 import com.campusland.entities.ActorType.domain.ActorType;
 
 public interface ActorTypeRepository {
-    void addActor(ActorType actorType);
-    void updateActor(ActorType actorType);
+    void addActorType(ActorType actorType);
+    void updateActorType(ActorType actorType);
     void deleteActorType(int id);
     Optional<ActorType> findById(int id);
     List<ActorType> findAll(); 

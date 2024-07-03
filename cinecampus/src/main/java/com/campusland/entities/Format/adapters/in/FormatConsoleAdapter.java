@@ -10,12 +10,10 @@ import com.campusland.entities.Format.domain.Format;
 public class FormatConsoleAdapter {
 static Scanner sc = new Scanner(System.in);
 
-    private final FormatService FormatService;
+    private final FormatService formatService;
 
-    
-
-    public FormatConsoleAdapter(FormatService PAISService) {
-        this.FormatService = PAISService;
+    public FormatConsoleAdapter(FormatService formatService) {
+        this.formatService = formatService;
     }
 
     public void registerFormat() {
@@ -23,47 +21,47 @@ static Scanner sc = new Scanner(System.in);
         while (rta.equalsIgnoreCase("s")) {
             ConsoleUtils.limpiarConsola();
             int idBase = 0;
-            System.out.println("*************** REGISTRO PAIS ***************");
-            System.out.println("[*] INGRESE DESCRIPCION DE PAIS: ");
-            String description = sc.nextLine();
-
-            System.out.println("[*] INGRESE EL ID DEL PAIS: ");
+            System.out.println("*************** REGISTRO FORMATO ***************");
+            System.out.println("[*] INGRESE EL ID DEL FORMATO: ");
             idBase = Integer.parseInt(sc.nextLine());
 
+            System.out.println("[*] INGRESE DESCRIPCION DE FORMATO: ");
+            String description = sc.nextLine();
+
             Format Format = new Format(idBase, description);
-            FormatService.createFormat(Format);
+            formatService.createFormat(Format);
 
             ConsoleUtils.limpiarConsola();
-            System.out.println("[?] DESEA REGISTRAR OTRO PAIS? [S - Si | Cualquier tecla para salir]");
+            System.out.println("[?] DESEA REGISTRAR OTRO FORMATO? [S - Si | Cualquier tecla para salir]");
             rta = sc.nextLine();
         }
     }
 
     public void updateFormat() {
-        List<Format> countries = FormatService.getAllFormats();
+        List<Format> countries = formatService.getAllFormats();
         if (countries.isEmpty()) {
             ConsoleUtils.limpiarConsola();
-            System.out.println("[!] NO HAY NINGUN PAIS REGISTRADO! ");
+            System.out.println("[!] NO HAY NINGUN FORMATO REGISTRADO! ");
             sc.nextLine();
         } else {
             ConsoleUtils.limpiarConsola();
-            System.out.println("*************** ACTUALIZACION DE PAIS ***************");
-            System.out.println("[?] INGRESE EL ID DEL TIPO DE PAIS A ACTUALIZAR: ");
+            System.out.println("*************** ACTUALIZACION DE FORMATO ***************");
+            System.out.println("[?] INGRESE EL ID DEL TIPO DE FORMATO A ACTUALIZAR: ");
             int id = Integer.parseInt(sc.nextLine());
 
-            Optional<Format> matchPAIS = FormatService.findFormatById(id);
+            Optional<Format> matchFORMATO = formatService.findFormatById(id);
 
-            matchPAIS.ifPresentOrElse(a -> {
+            matchFORMATO.ifPresentOrElse(f -> {
                 ConsoleUtils.limpiarConsola();
-                System.out.println("*************** ACTUALIZACION DE PAIS***************");
-                System.out.println("[*] INGRESE DESCRIPCION DEL PAIS: ");
+                System.out.println("*************** ACTUALIZACION DE FORMATO***************");
+                System.out.println("[*] INGRESE DESCRIPCION DEL FORMATO: ");
                 String description = sc.nextLine();
-                Format Format = new Format (a.getId(), description);
-                FormatService.updateFormat(Format);
+                Format format = new Format (f.getId(), description);
+                formatService.updateFormat(format);
             }, 
             () -> {
                 ConsoleUtils.limpiarConsola();
-                System.out.println("[!] NO EXISTE UN PAIS CON TAL ID!");
+                System.out.println("[!] NO EXISTE UN FORMATO CON TAL ID!");
                 sc.nextLine();
             });
 
@@ -71,80 +69,80 @@ static Scanner sc = new Scanner(System.in);
     }
 
     public void dropFormat() {
-        List<Format> PAISes = FormatService.getAllFormats();
-        if (PAISes.isEmpty()) {
+        List<Format> FORMATOes = formatService.getAllFormats();
+        if (FORMATOes.isEmpty()) {
             ConsoleUtils.limpiarConsola();
-            System.out.println("[!] NO HAY NINGUN PAIS REGISTRADO! ");
+            System.out.println("[!] NO HAY NINGUN FORMATO REGISTRADO! ");
             sc.nextLine();
         } else {
             ConsoleUtils.limpiarConsola();
-            System.out.println("*************** ELIMINACION DE PAIS ***************");
-            System.out.println("[?] INGRESE EL ID DEL PAIS A ELIMINAR: ");
+            System.out.println("*************** ELIMINACION DE FORMATO ***************");
+            System.out.println("[?] INGRESE EL ID DEL FORMATO A ELIMINAR: ");
             int id = Integer.parseInt(sc.nextLine());
 
-            Optional<Format> matchPAIS = FormatService.findFormatById(id);
-            matchPAIS.ifPresentOrElse(
-                a -> {
+            Optional<Format> matchFORMATO = formatService.findFormatById(id);
+            matchFORMATO.ifPresentOrElse(
+                f -> {
                     ConsoleUtils.limpiarConsola();
-                    System.out.println(MessageFormat.format("[?] ESTAS SEGURO QUE DESEAS ELIMINAR EL PAIS {0} ? [S - Si | Cuaquier tecla - No]", a.getId()));
+                    System.out.println(MessageFormat.format("[?] ESTAS SEGURO QUE DESEAS ELIMINAR EL FORMATO {0} ? [S - Si | Cuaquier tecla - No]", f.getId()));
                     String sel = sc.nextLine();
 
                     if (sel.equalsIgnoreCase("S")) {
                         ConsoleUtils.limpiarConsola();
-                        System.out.println("[*] EL PAIS HA SIDO ELIMINADO EXITOSAMENTE");
-                        FormatService.deleteFormat(id);
+                        System.out.println("[*] EL FORMATO HA SIDO ELIMINADO EXITOSAMENTE");
+                        formatService.deleteFormat(id);
                     } else {
                         sc.nextLine();
                     }
                 },
                 () -> {
                     ConsoleUtils.limpiarConsola();
-                    System.out.println(MessageFormat.format("[!] NO HAY NINGUN PAIS REGISTRADO CON EL ID [{0}]", id));
+                    System.out.println(MessageFormat.format("[!] NO HAY NINGUN FORMATO REGISTRADO CON EL ID [{0}]", id));
                     sc.nextLine();
                 });
         }
     }
 
     public void getFormatByID() {
-        List<Format> PAISes = FormatService.getAllFormats();
-        if (PAISes.isEmpty()) {
+        List<Format> FORMATOes = formatService.getAllFormats();
+        if (FORMATOes.isEmpty()) {
             ConsoleUtils.limpiarConsola();
-            System.out.println("[!] NO HAY NINGUN PAIS REGISTRADO! ");
+            System.out.println("[!] NO HAY NINGUN FORMATO REGISTRADO! ");
             sc.nextLine();
         } else {
             ConsoleUtils.limpiarConsola();
-            System.out.println("*************** BUSQUEDA DE PAIS ***************");
-            System.out.println("[?] INGRESE EL ID DEL PAIS A BUSCAR: ");
+            System.out.println("*************** BUSQUEDA DE FORMATO ***************");
+            System.out.println("[?] INGRESE EL ID DEL FORMATO A BUSCAR: ");
             int id = Integer.parseInt(sc.nextLine());
 
-            Optional<Format> matchPAIS = FormatService.findFormatById(id);
-            matchPAIS.ifPresentOrElse(
-                a -> {
+            Optional<Format> matchFORMATO = formatService.findFormatById(id);
+            matchFORMATO.ifPresentOrElse(
+                f -> {
                     ConsoleUtils.limpiarConsola();
-                    System.out.println("***************PAIS***************");
-                    System.out.println(MessageFormat.format("       [*] ID: {0}\n       [*] DESCRIPTION: {1}\n       ", a.getId(), a.getDescription()));
+                    System.out.println("***************FORMATO***************");
+                    System.out.println(MessageFormat.format("       [*] ID: {0}\n       [*] DESCRIPTION: {1}\n       ", f.getId(), f.getDescription()));
                     sc.nextLine();
                 },
                 () -> {
                     ConsoleUtils.limpiarConsola();
-                    System.out.println(MessageFormat.format("[!] NO HAY NINGUN TIPO DE PAIS REGISTRADO CON EL ID [{0}]", id));
+                    System.out.println(MessageFormat.format("[!] NO HAY NINGUN TIPO DE FORMATO REGISTRADO CON EL ID [{0}]", id));
                     sc.nextLine();
                 });
         }
     }
 
-    public void getPAISsTypes() {
-        List<Format> Formats = FormatService.getAllFormats();
-        if (Formats.isEmpty()) {
+    public void getAllFormats() {
+        List<Format> formats = formatService.getAllFormats();
+        if (formats.isEmpty()) {
             ConsoleUtils.limpiarConsola();
-            System.out.println("[!] NO HAY NINGUN TIPO DE PAIS REGISTRADO! ");
+            System.out.println("[!] NO HAY NINGUN TIPO DE FORMATO REGISTRADO! ");
             sc.nextLine();
         } else {
             ConsoleUtils.limpiarConsola();
-            System.out.println("*************** PAISES ***************");
-            Formats.forEach(a -> {
+            System.out.println("*************** FORMATOES ***************");
+            formats.forEach(f -> {
                 System.out.println("-----------------------------------------------------------------------------");
-                System.out.println(MessageFormat.format("       [*] ID: {0}\n       [*] DESCRIPCION: {1}\n ", a.getId(), a.getDescription()));
+                System.out.println(MessageFormat.format("       [*] ID: {0}\n       [*] DESCRIPCION: {1}\n ", f.getId(), f.getDescription()));
             });
             sc.nextLine();
         }

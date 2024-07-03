@@ -14,8 +14,6 @@ static Scanner sc = new Scanner(System.in);
 
     private final ActorTypeService actorTypeService;
 
-    
-
     public ActorTypeConsoleAdapter(ActorTypeService actorService) {
         this.actorTypeService = actorService;
     }
@@ -26,11 +24,11 @@ static Scanner sc = new Scanner(System.in);
             ConsoleUtils.limpiarConsola();
             int idBase = 0;
             System.out.println("*************** REGISTRO TIPO DE ACTOR ***************");
-            System.out.println("[*] INGRESE DESCRIPCION DE TIPO DE ACTOR: ");
-            String description = sc.nextLine();
-
             System.out.println("[*] INGRESE EL ID DEL TIPO DE ACTOR: ");
             idBase = Integer.parseInt(sc.nextLine());
+
+            System.out.println("[*] INGRESE DESCRIPCION DE TIPO DE ACTOR: ");
+            String description = sc.nextLine();
 
             ActorType actorType = new ActorType(idBase, description);
             actorTypeService.createActorType(actorType);

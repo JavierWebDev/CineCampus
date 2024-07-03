@@ -6,7 +6,6 @@ import com.campusland.entities.ActorType.domain.ActorType;
 import com.campusland.entities.ActorType.infrastructure.ActorTypeRepository;
 
 public class ActorTypeService {
-    
     private final ActorTypeRepository actorTypeRepository;
 
     public ActorTypeService(ActorTypeRepository actorTypeRepository) {
@@ -14,11 +13,11 @@ public class ActorTypeService {
     }
 
     public void createActorType(ActorType actorType) {
-        actorTypeRepository.addActor(actorType);
+        actorTypeRepository.addActorType(actorType);
     }
 
     public void updateActorType(ActorType actorType) {
-        actorTypeRepository.updateActor(actorType);
+        actorTypeRepository.updateActorType(actorType);
     }
 
     public void deleteActorType(int id) {

@@ -9,30 +9,29 @@ import com.campusland.entities.Country.application.CountryService;
 import com.campusland.entities.Country.domain.Country;
 
 public class CountryConsoleAdapter {
-static Scanner sc = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
 
-    private final CountryService CountryService;
+    private final CountryService countryService;
 
     
 
-    public CountryConsoleAdapter(CountryService PAISService) {
-        this.CountryService = PAISService;
+    public CountryConsoleAdapter(CountryService countryService) {
+        this.countryService = countryService;
     }
 
     public void registerCountry() {
         String rta = "S";
         while (rta.equalsIgnoreCase("s")) {
             ConsoleUtils.limpiarConsola();
-            int idBase = 0;
             System.out.println("*************** REGISTRO PAIS ***************");
-            System.out.println("[*] INGRESE DESCRIPCION DE PAIS: ");
+            System.out.println("[*] INGRESE EL ID DEL PAIS: ");
+            int id = Integer.parseInt(sc.nextLine());
+            
+            System.out.println("[*] INGRESE EL NOMBRE DE PAIS: ");
             String description = sc.nextLine();
 
-            System.out.println("[*] INGRESE EL ID DEL PAIS: ");
-            idBase = Integer.parseInt(sc.nextLine());
-
-            Country Country = new Country(idBase, description);
-            CountryService.createCountry(Country);
+            Country country = new Country(id, description);
+            countryService.createCountry(country);
 
             ConsoleUtils.limpiarConsola();
             System.out.println("[?] DESEA REGISTRAR OTRO PAIS? [S - Si | Cualquier tecla para salir]");
@@ -41,7 +40,7 @@ static Scanner sc = new Scanner(System.in);
     }
 
     public void updateCountry() {
-        List<Country> countries = CountryService.getAllCountrys();
+        List<Country> countries = countryService.getAllCountrys();
         if (countries.isEmpty()) {
             ConsoleUtils.limpiarConsola();
             System.out.println("[!] NO HAY NINGUN PAIS REGISTRADO! ");
@@ -52,15 +51,15 @@ static Scanner sc = new Scanner(System.in);
             System.out.println("[?] INGRESE EL ID DEL TIPO DE PAIS A ACTUALIZAR: ");
             int id = Integer.parseInt(sc.nextLine());
 
-            Optional<Country> matchPAIS = CountryService.findCountryById(id);
+            Optional<Country> matchCountry = countryService.findCountryById(id);
 
-            matchPAIS.ifPresentOrElse(a -> {
+            matchCountry.ifPresentOrElse(a -> {
                 ConsoleUtils.limpiarConsola();
                 System.out.println("*************** ACTUALIZACION DE PAIS***************");
                 System.out.println("[*] INGRESE DESCRIPCION DEL PAIS: ");
                 String description = sc.nextLine();
-                Country Country = new Country (a.getId(), description);
-                CountryService.updateCountry(Country);
+                Country country = new Country (a.getId(), description);
+                countryService.updateCountry(country);
             }, 
             () -> {
                 ConsoleUtils.limpiarConsola();
@@ -72,8 +71,8 @@ static Scanner sc = new Scanner(System.in);
     }
 
     public void dropCountry() {
-        List<Country> PAISes = CountryService.getAllCountrys();
-        if (PAISes.isEmpty()) {
+        List<Country> countries = countryService.getAllCountrys();
+        if (countries.isEmpty()) {
             ConsoleUtils.limpiarConsola();
             System.out.println("[!] NO HAY NINGUN PAIS REGISTRADO! ");
             sc.nextLine();
@@ -83,8 +82,8 @@ static Scanner sc = new Scanner(System.in);
             System.out.println("[?] INGRESE EL ID DEL PAIS A ELIMINAR: ");
             int id = Integer.parseInt(sc.nextLine());
 
-            Optional<Country> matchPAIS = CountryService.findCountryById(id);
-            matchPAIS.ifPresentOrElse(
+            Optional<Country> matchCountry = countryService.findCountryById(id);
+            matchCountry.ifPresentOrElse(
                 a -> {
                     ConsoleUtils.limpiarConsola();
                     System.out.println(MessageFormat.format("[?] ESTAS SEGURO QUE DESEAS ELIMINAR EL PAIS {0} ? [S - Si | Cuaquier tecla - No]", a.getId()));
@@ -93,7 +92,7 @@ static Scanner sc = new Scanner(System.in);
                     if (sel.equalsIgnoreCase("S")) {
                         ConsoleUtils.limpiarConsola();
                         System.out.println("[*] EL PAIS HA SIDO ELIMINADO EXITOSAMENTE");
-                        CountryService.deleteCountry(id);
+                        countryService.deleteCountry(id);
                     } else {
                         sc.nextLine();
                     }
@@ -107,8 +106,8 @@ static Scanner sc = new Scanner(System.in);
     }
 
     public void getCountryByID() {
-        List<Country> PAISes = CountryService.getAllCountrys();
-        if (PAISes.isEmpty()) {
+        List<Country> conutries = countryService.getAllCountrys();
+        if (conutries.isEmpty()) {
             ConsoleUtils.limpiarConsola();
             System.out.println("[!] NO HAY NINGUN PAIS REGISTRADO! ");
             sc.nextLine();
@@ -118,8 +117,8 @@ static Scanner sc = new Scanner(System.in);
             System.out.println("[?] INGRESE EL ID DEL PAIS A BUSCAR: ");
             int id = Integer.parseInt(sc.nextLine());
 
-            Optional<Country> matchPAIS = CountryService.findCountryById(id);
-            matchPAIS.ifPresentOrElse(
+            Optional<Country> matchCountry = countryService.findCountryById(id);
+            matchCountry.ifPresentOrElse(
                 a -> {
                     ConsoleUtils.limpiarConsola();
                     System.out.println("***************PAIS***************");
@@ -134,16 +133,16 @@ static Scanner sc = new Scanner(System.in);
         }
     }
 
-    public void getPAISsTypes() {
-        List<Country> Countrys = CountryService.getAllCountrys();
-        if (Countrys.isEmpty()) {
+    public void getAllCountrys() {
+        List<Country> countries = countryService.getAllCountrys();
+        if (countries.isEmpty()) {
             ConsoleUtils.limpiarConsola();
             System.out.println("[!] NO HAY NINGUN TIPO DE PAIS REGISTRADO! ");
             sc.nextLine();
         } else {
             ConsoleUtils.limpiarConsola();
             System.out.println("*************** PAISES ***************");
-            Countrys.forEach(a -> {
+            countries.forEach(a -> {
                 System.out.println("-----------------------------------------------------------------------------");
                 System.out.println(MessageFormat.format("       [*] ID: {0}\n       [*] DESCRIPCION: {1}\n ", a.getId(), a.getDescription()));
             });

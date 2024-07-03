@@ -4,7 +4,6 @@ public class Country {
     private int id;
     private String description;
     
-    
     public Country() {}
 
     public Country(int id, String description) {

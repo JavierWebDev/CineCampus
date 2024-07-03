@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.campusland.entities.Gender.domain.Gender;
-import com.campusland.entities.Gender.domain.Gender;
 import com.campusland.entities.Gender.infrastructure.GenderRepository;
 
 public class GenderMySQLRepository implements GenderRepository{
@@ -27,7 +26,7 @@ public class GenderMySQLRepository implements GenderRepository{
 
     public void addGender(Gender gender) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO gender (id, nombre, idnacionalidad, edad, idgenero) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO genero (id, descripcion) VALUES (?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, gender.getId());
                 statement.setString(2, gender.getDescripcion());
@@ -40,10 +39,10 @@ public class GenderMySQLRepository implements GenderRepository{
 
     public void updateGender(Gender gender) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE TABLE gender SET descripcion = ? WHERE id = ?";
+            String query = "UPDATE genero SET descripcion = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(2, gender.getDescripcion());
-                statement.setInt(5, gender.getId());
+                statement.setString(1, gender.getDescripcion());
+                statement.setInt(2, gender.getId());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -53,7 +52,7 @@ public class GenderMySQLRepository implements GenderRepository{
 
     public void deleteGender(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "DELETE Gender WHERE id = ?";
+            String query = "DELETE FROM gender WHERE id = ?";
                 try (PreparedStatement statement = connection.prepareStatement(query)) {
                     statement.setInt(1, id);
                     statement.executeUpdate();
@@ -66,7 +65,7 @@ public class GenderMySQLRepository implements GenderRepository{
 
     public Optional<Gender> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT descripcion FROM Gender WHERE id = ?";
+            String query = "SELECT id, descripcion FROM genero WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -90,7 +89,7 @@ public class GenderMySQLRepository implements GenderRepository{
     public List<Gender> findAll() {
         List<Gender> genders = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT nombre, idnacionalidad, edad, idgenero FROM Gender";
+            String query = "SELECT id, descripcion FROM genero";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {

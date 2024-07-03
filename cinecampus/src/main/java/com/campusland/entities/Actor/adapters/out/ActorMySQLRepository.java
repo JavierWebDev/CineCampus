@@ -42,7 +42,7 @@ public class ActorMySQLRepository implements ActorRepository{
 
     public void updateActor(Actor actor) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE TABLE actor SET nombre = ?, idnacionalidad = ?, edad = ?, idgenero = ? WHERE id = ?";
+            String query = "UPDATE actor SET nombre = ?, idnacionalidad = ?, edad = ?, idgenero = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, actor.getNombre());
                 statement.setInt(2, actor.getIdNacionalidad());
@@ -58,7 +58,7 @@ public class ActorMySQLRepository implements ActorRepository{
 
     public void deleteActor(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "DELETE actor WHERE id = ?";
+            String query = "DELETE FROM actor WHERE id = ?";
                 try (PreparedStatement statement = connection.prepareStatement(query)) {
                     statement.setInt(1, id);
                     statement.executeUpdate();
@@ -71,7 +71,7 @@ public class ActorMySQLRepository implements ActorRepository{
 
     public Optional<Actor> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT nombre, idnacionalidad, edad, idgenero FROM actor WHERE id = ?";
+            String query = "SELECT id, nombre, idnacionalidad, edad, idgenero FROM actor WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -98,7 +98,7 @@ public class ActorMySQLRepository implements ActorRepository{
     public List<Actor> findAll() {
         List<Actor> actores = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT nombre, idnacionalidad, edad, idgenero FROM actor";
+            String query = "SELECT id, nombre, idnacionalidad, edad, idgenero FROM actor";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {

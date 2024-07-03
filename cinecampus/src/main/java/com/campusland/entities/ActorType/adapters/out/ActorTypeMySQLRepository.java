@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.campusland.entities.ActorType.infrastructure.ActorTypeRepository;
 import com.campusland.entities.ActorType.domain.ActorType;
 
-public class ActorTypeMySQLRepository {
+public class ActorTypeMySQLRepository implements ActorTypeRepository{
     String url;
     String user;
     String password;
@@ -48,7 +49,7 @@ public class ActorTypeMySQLRepository {
 
     public void deleteActorType(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "DELETE tipoactor WHERE id = ?";
+            String query = "DELETE FROM tipoactor WHERE id = ?";
                 try (PreparedStatement statement = connection.prepareStatement(query)) {
                     statement.setInt(1, id);
                     statement.executeUpdate();
@@ -61,7 +62,7 @@ public class ActorTypeMySQLRepository {
 
     public Optional<ActorType> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT descripcion FROM tipoactor WHERE id = ?";
+            String query = "SELECT id, descripcion FROM tipoactor WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {

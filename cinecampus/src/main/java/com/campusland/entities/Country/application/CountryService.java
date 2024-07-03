@@ -6,29 +6,29 @@ import com.campusland.entities.Country.domain.Country;
 import com.campusland.entities.Country.infrastructure.CountryRepository;
 
 public class CountryService {
-    private final CountryRepository CountryRepository;
+    private final CountryRepository countryRepository;
 
-    public CountryService(CountryRepository CountryRepository) {
-        this.CountryRepository = CountryRepository;
+    public CountryService(CountryRepository countryRepository) {
+        this.countryRepository = countryRepository;
     }
 
-    public void createCountry(Country Country) {
-        CountryRepository.addCountry(Country);
+    public void createCountry(Country country) {
+        countryRepository.addCountry(country);
     }
 
-    public void updateCountry(Country Country) {
-        CountryRepository.updateCountry(Country);
+    public void updateCountry(Country country) {
+        countryRepository.updateCountry(country);
     }
 
     public void deleteCountry(int id) {
-        CountryRepository.deleteCountry(id);
+        countryRepository.deleteCountry(id);
     }
 
     public Optional<Country> findCountryById(int id) {
-        return CountryRepository.findById(id);
+        return countryRepository.findById(id);
     }
 
     public List<Country> getAllCountrys() {
-        return CountryRepository.findAll();
+        return countryRepository.findAll();
     }
 }

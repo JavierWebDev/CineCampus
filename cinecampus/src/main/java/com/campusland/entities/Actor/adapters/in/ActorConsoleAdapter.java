@@ -23,8 +23,10 @@ public class ActorConsoleAdapter {
         String rta = "S";
         while (rta.equalsIgnoreCase("s")) {
             ConsoleUtils.limpiarConsola();
-            int idBase = 0;
             System.out.println("*************** REGISTRO DE ACTORES ***************");
+            System.out.println("[*] INGRESE EL ID DEL ACTOR: ");
+            int id = Integer.parseInt(sc.nextLine());
+
             System.out.println("[*] INGRESE EL NOMBRE DEL ACTOR: ");
             String name = sc.nextLine();
 
@@ -37,7 +39,7 @@ public class ActorConsoleAdapter {
             System.out.println("[*] INGRESE EL ID DEL GENERO DEL ACTOR: ");
             int idGender = Integer.parseInt(sc.nextLine());
 
-            Actor actor = new Actor(idBase, name, idNationality, age, idGender);
+            Actor actor = new Actor(id, name, idNationality, age, idGender);
             actorService.createActor(actor);
 
             ConsoleUtils.limpiarConsola();
